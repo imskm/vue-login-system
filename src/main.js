@@ -11,6 +11,12 @@ import { useAuthStore } from '@/stores/AuthStore.js';
 router.beforeEach((to, from) => {
 	const auth = useAuthStore();
 	console.log("OK22", to.meta.requiresAuth);
+	if (to.name == 'login') {
+		if (auth.isAuthenticated()) {
+			return { name: 'dashboard' };
+		}
+	}
+
 	if (to.meta.requiresAuth === true) {
 		console.log("OK23");
 		// Check user is logged in or not
