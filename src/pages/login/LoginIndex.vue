@@ -24,13 +24,23 @@ export default {
 	methods: {
 		onLogin() {
 			// console.log("OK");
-			let ret = this.login(this.email, this.password);
+			this.login(this.email, this.password).then((isAuth) => {
 
-			if (ret === true) {
 				this.$router.push({name: "dashboard"});
-			}
 
-			this.message = "Invalid email or password.";
+			}).catch((error) => {
+
+				// console.log(error.errors);
+				// this.message = error.errors.email;
+				// console.log(this.message);
+
+			});
+
+			// if (ret === true) {
+			// 	this.$router.push({name: "dashboard"});
+			// }
+
+			// this.message = "Invalid email or password.";
 
 		},
 

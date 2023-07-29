@@ -10,13 +10,48 @@ export const useAuthStore = defineStore('auth', {
 
 	actions: {
 		login(email, password) {
-			if (email === 'user@example.com' && password === '12345678') {
-				this.isAuthed = true;
-				this.rememberAuthedUser(email);
-				return true;
-			}
+			const url = 'http://auth-demo/auth/login/authenticate';
+			const form = new FormData();
+			form.append("email", email);
+			form.append("password", password);
 
-			return false;
+			const option = {
+				method: "POST",
+				body: form,
+			};
+
+			return new Promise((resolve, reject) => {
+				fetch(url, option).then((res) => {
+					return res.json();
+				}).then((data) => {
+					//
+					console.log(data);
+					if (data.status == "error") {
+						reject(data.errors);
+					} else {
+						console.log("OK");
+
+						// Handle successful login
+
+						this.isAuthed = true;
+						this.rememberAuthedUser(email);
+						resolve(true);
+						
+					}
+
+				});
+			});
+
+			
+
+			// OLD code
+			// if (email === 'user@example.com' && password === '12345678') {
+			// 	this.isAuthed = true;
+			// 	this.rememberAuthedUser(email);
+			// 	return true;
+			// }
+
+			// return false;
 		},
 
 		isAuthenticated() {
